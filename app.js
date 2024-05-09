@@ -1,20 +1,25 @@
 const createError = require("http-errors");
 const express = require("express");
-const { join } = require("path");
+const path = require("path");
 const logger = require("morgan");
 const http = require("http");
 const { Pool } = require("pg");
 const dotenv = require("dotenv");
+const cors = require("cors");
 
 const indexRouter = require("./routes/index");
+const bridgesRouter = require("./routes/bridges");
 
 const app = express();
 dotenv.config({ path: "./.env" });
 
 app.use(logger("dev"));
-// app.use(express.json());
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(join(__dirname, "public")));
+// app.use(express.static(path.join(__dirname, "./public")));
+app.use(express.static(path.join(__dirname, "./public/react-app/build")));
+
+app.use(cors());
 
 const pool = new Pool({
   user: process.env.DATABASE_USER,
@@ -24,7 +29,7 @@ const pool = new Pool({
   database: process.env.DATABASE_NAME,
   max: 50, // 10 is default
   idleTimeoutMillis: 10000, // 10000 is default
-  connectionTimeoutMillis: 2000, // 0 (no timeout!) is default
+  connectionTimeoutMillis: 0, // 0 (no timeout!) is default
 });
 
 pool.on("error", (err) => {
@@ -38,7 +43,7 @@ app.use(async (req, res, next) => {
 });
 
 app.use("/", indexRouter);
-// app.use("/users", usersRouter);
+app.use("/bridges", bridgesRouter);
 
 app.use((req, res, next) => {
   next(createError(404));
