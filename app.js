@@ -13,8 +13,8 @@ dotenv.config({ path: "./.env" });
 
 app.use(logger("dev"));
 // app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
-// app.use(express.static(join(__dirname, "public")));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(join(__dirname, "public")));
 
 const pool = new Pool({
   user: process.env.DATABASE_USER,

@@ -1,3 +1,5 @@
+-- TODO: You should design a database schema that effectively organizes the processed data.
+
 --
 -- PostgreSQL database dump
 --
