@@ -4,12 +4,21 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
   entry: "./src/index.tsx",
   output: {
-    path: path.join(__dirname, "/dist"), // the bundle output path
-    filename: "bundle.js", // the name of the bundle
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist"),
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+    }),
+  ],
   devServer: {
-    port: 3030, // you can change the port
+    static: {
+      directory: path.join(__dirname, "static"),
+    },
+    port: 8080,
   },
+  devtool: "inline-source-map",
   module: {
     rules: [
       {
@@ -20,10 +29,16 @@ module.exports = {
       },
       {
         test: /\.[jt]sx?$/,
-        exclude: /node_modules/, // excluding the node_modules folder
         use: {
           loader: "esbuild-loader",
+          options: {
+            target: "es2015",
+          },
         },
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        type: "asset/resource",
       },
     ],
   },

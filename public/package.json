@@ -34,7 +34,7 @@
   },
   "scripts": {
     "serve": "webpack serve --mode development",
-    "cesium-copy": "mkdir -p dist/cesium && cp -R node_modules/cesium/Build/Cesium/* dist/cesium",
+    "cesium-copy": "mkdir -p static/cesium && cp -R node_modules/cesium/Build/Cesium/* static/cesium",
     "develop": "yarn cesium-copy && yarn serve",
     "build": "webpack --mode production",
     "deploy": "yarn build && yarn cesium-copy"
